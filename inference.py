@@ -77,24 +77,22 @@ def main():
     parser.add_argument('--base_dir', default='./')
     parser.add_argument('--input_dir', default='input', help='Input dir')
     parser.add_argument('--output_dir', default='output', help='Output dir')    
-    parser.add_argument('--force', action='store_true', default=False)
     args = parser.parse_args()
 
     model = get_model().to(device)
 
-    if args.force and not os.path.exists(args.output_dir):
+    if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
     for filepath in tqdm(glob.glob(args.input_dir + '/*.wav')):
         filename = os.path.basename(filepath)
         new_filepath = os.path.join(args.output_dir, filename)
-        if args.force:
-            noisy_signal, sr = torchaudio.load(filepath)
-            unoise_signal = enhance(noisy_signal, model)
-            save_wav(unoise_signal.to('cpu').squeeze(), new_filepath, sr)
-        else:
-            print('clean {} {} '.format(filepath, new_filepath))
-            time.sleep(1)
+        noisy_signal, sr = torchaudio.load(filepath)
+        unoise_signal = enhance(noisy_signal, model)
+        save_wav(unoise_signal.to('cpu').squeeze(), new_filepath, sr)
+
+
+
 
 if __name__ == "__main__":
     main()

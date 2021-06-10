@@ -299,6 +299,12 @@ optional arguments:
                         json file including noisy wav files
 ```
 
+You can use an alternative script:
+
+```
+python -m inference.py --input_dir=<path to the dir with the noisy files> --output_dir=<path to store enhanced files>
+```
+
 ### 5. Reproduce Results
 
 Here we provide a detailed description of how to reproduce the results from the paper:
